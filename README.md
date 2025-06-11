@@ -8,8 +8,8 @@
   1. 拷贝 merge.sh 文件到你的项目根目录, 随意命名 (A.sh)
   2. A.sh 添加到 .gitignore
   3. 打开终端（路径为项目根目录）
-  4. chmod +x ./merge.sh # 第一次使用需要，后边跳过直接执行第5步
-  5. ./merge.sh 或者 bash ./merge.sh # 之后直接执行即可
+  4. chmod +x ./A.sh # 第一次使用需要，后边跳过直接执行第5步
+  5. ./A.sh 或者 bash ./A.sh # 之后直接执行即可
 ```
 # 功能流程介绍
 
