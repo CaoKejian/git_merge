@@ -37,12 +37,10 @@ if [[ -f "$CACHE_FILE" ]]; then
         echo -e "${GREEN_BOLD}使用上次的目标分支: $target_branch${NC}"
     else
         read -p "请输入新的目标分支名称: " target_branch
-        echo "$target_branch" > "$CACHE_FILE"
         echo -e "${GREEN_BOLD}用户选择: $target_branch${NC}"
     fi
 else
     read -p "请输入目标分支名称: " target_branch
-    echo "$target_branch" > "$CACHE_FILE"
     echo -e "${GREEN_BOLD}用户选择: $target_branch${NC}"
 fi
 
@@ -71,3 +69,9 @@ echo -e "${YELLOW_BOLD}✅ 合并完成！已从 $current_branch 合并到 $targ
 git checkout $current_branch || error_exit "切换回原分支" "无法切换回原分支 $current_branch"
 
 echo -e "${YELLOW_BOLD}✅ 已自动切换分支回 $current_branch${NC}"
+
+# 所有操作成功完成，保存缓存
+function save_cache {
+    echo "$target_branch" > "$CACHE_FILE"
+}
+save_cache
