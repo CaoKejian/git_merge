@@ -10,8 +10,7 @@ function title {
 }
 
 function error_exit {
-  echo -e "\n❌ 错误发生在: $1"
-  echo "❌ 错误信息: $2"
+  echo -e "\n❌ 错误发生在: $1, 错误信息: $2, 请仔细阅读上方error-log 🔼"
   exit 1
 }
 
@@ -24,9 +23,28 @@ GREEN_BOLD='\033[1;32m'
 YELLOW_BOLD='\033[1;33m'
 NC='\033[0m' # 重置颜色
 
-# 用户输入目标分支
-read -p "请输入目标分支名称: " target_branch
-echo -e "${GREEN_BOLD}用户选择: $target_branch${NC}"
+# 缓存文件路径
+CACHE_FILE="/tmp/last_target_branch_$(basename $(pwd)).txt"
+
+# 检查是否有缓存的目标分支
+if [[ -f "$CACHE_FILE" ]]; then
+    last_target_branch=$(cat "$CACHE_FILE")
+    echo -ne "是否要合并到上次相同的目标分支: ${GREEN_BOLD}${last_target_branch}${NC} [Y/n] "
+    read -r use_last_branch
+    
+    if [[ "$use_last_branch" =~ ^[Yy]$ ]] || [[ -z "$use_last_branch" ]]; then
+        target_branch=$last_target_branch
+        echo -e "${GREEN_BOLD}使用上次的目标分支: $target_branch${NC}"
+    else
+        read -p "请输入新的目标分支名称: " target_branch
+        echo "$target_branch" > "$CACHE_FILE"
+        echo -e "${GREEN_BOLD}用户选择: $target_branch${NC}"
+    fi
+else
+    read -p "请输入目标分支名称: " target_branch
+    echo "$target_branch" > "$CACHE_FILE"
+    echo -e "${GREEN_BOLD}用户选择: $target_branch${NC}"
+fi
 
 # 检查目标分支是否存在
 git show-ref --verify --quiet refs/heads/$target_branch || error_exit "检查目标分支" "分支 $target_branch 不存在"
