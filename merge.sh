@@ -57,7 +57,7 @@ git pull origin $target_branch || error_exit "拉取代码" "拉取分支 $targe
 
 # 合并当前分支到目标分支
 title "合并个人分支: $current_branch "
-git merge --no-ff $current_branch || error_exit "合并分支" "合并 $current_branch 到 $target_branch 时出现冲突"
+git merge --no-ff --no-edit $current_branch || error_exit "合并分支" "合并 $current_branch 到 $target_branch 时出现冲突"
 
 # 推送
 title "正在推送代码..."
